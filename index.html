@@ -2,13 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Clash of Clans XP Calculator</title>
+  <title>Clash of Clans XP Calculator - Player & Clan Level Estimator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="description" content="Calculate the total XP needed to reach your target player level or clan level in Clash of Clans. Estimate the hours or number of wars required to level up with this easy-to-use XP calculator.">
+  <meta name="keywords" content="Clash of Clans, CoC, XP calculator, player level, clan level, player XP, clan XP, level up, CoC calculator, how to level up fast, Clash of Clans guide">
+  <link rel="canonical" href="https://yourwebsite.com/clash-of-clans-xp-calculator">
 
-  <!-- Vercel Analytics -->
-  <script defer src="/_vercel/insights/script.js"></script>
+  <meta property="og:title" content="Clash of Clans XP Calculator - Player & Clan Level Estimator">
+  <meta property="og:description" content="Calculate the total XP needed to reach your target player level or clan level in Clash of Clans. Estimate the hours or number of wars required to level up with this easy-to-use XP calculator.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yourwebsite.com/clash-of-clans-xp-calculator">
+  <meta property="og:image" content="https://yourwebsite.com/images/coc-xp-calculator-share-image.jpg">
+  <meta property="og:image:alt" content="Clash of Clans XP Calculator UI showing input fields for player and clan levels">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Clash of Clans XP Calculator - Player & Clan Level Estimator">
+  <meta name="twitter:description" content="Calculate the total XP needed to reach your target player level or clan level in Clash of Clans. Estimate the hours or number of wars required to level up with this easy-to-use XP calculator.">
+  <meta name="twitter:image" content="https://yourwebsite.com/images/coc-xp-calculator-share-image.jpg">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -28,9 +41,16 @@
       max-width: 400px;
       box-sizing: border-box;
     }
-    h2 {
+    h1, h2 {
       text-align: center;
       margin-bottom: 20px;
+      color: #333;
+    }
+    h1 {
+      font-size: 28px;
+    }
+    h2 {
+      font-size: 24px;
     }
     label {
       display: block;
@@ -56,6 +76,7 @@
       border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
+      transition: background-color 0.3s ease;
     }
     button:hover {
       background: #005fcc;
@@ -63,10 +84,13 @@
     .result {
       margin-top: 20px;
       font-size: 16px;
-      font-weight: bold;
       text-align: center;
       color: #333;
+      line-height: 1.5;
       word-break: break-word;
+    }
+    .result b {
+      color: #0077ff;
     }
     #showBreakdown, #collapseBreakdown {
       background: #00aaff;
@@ -93,41 +117,6 @@
     .credit a:hover {
       text-decoration: underline;
     }
-    .contact-link {
-      color: #0077ff;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 14px;
-    }
-    .contact-link i {
-      font-size: 14px;
-    }
-    .contact-section {
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 1px solid #eee;
-    }
-    .contact-section p {
-      margin: 0 0 10px 0;
-      font-size: 14px;
-      color: #666;
-    }
-    .contact-link {
-      color: #0077ff;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 14px;
-    }
-    .contact-link:hover {
-      text-decoration: underline;
-    }
-    .contact-link i {
-      font-size: 14px;
-    }
     .toggle-buttons {
       display: flex;
       justify-content: center;
@@ -151,31 +140,36 @@
       background-color: #d0d0d0;
     }
     
-
+    /* SEO-friendly H2 headings for content sections */
+    #playerCalculator h2, #clanCalculator h2 {
+      display: none; /* Hide the headings visually but keep them for SEO */
+    }
+    
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Clash of Clans XP Calculator</h2>
+    <h1>Clash of Clans XP Calculator</h1>
     
-    <!-- Toggle Buttons -->
+    <p style="text-align: center; color: #666;">Estimate the XP and time needed to level up your player or clan.</p>
+
     <div class="toggle-buttons">
       <button id="playerBtn" class="toggle-btn active" onclick="toggleCalculator('player')">Player XP</button>
       <button id="clanBtn" class="toggle-btn" onclick="toggleCalculator('clan')">Clan XP</button>
     </div>
     
-    <!-- Player XP Calculator -->
     <div id="playerCalculator">
-      <label for="currentLevel">Current Level</label>
+      <h2>Player Level XP Calculator</h2>
+      <label for="currentLevel">Current Player Level</label>
     <input type="number" id="currentLevel" min="1" placeholder="e.g. 257">
 
-    <label for="targetLevel">Target Level</label>
+    <label for="targetLevel">Target Player Level</label>
     <input type="number" id="targetLevel" min="2" placeholder="e.g. 300">
 
     <label for="xpPerHour">Estimated XP per Hour (Optional)</label>
     <input type="number" id="xpPerHour" min="1" placeholder="e.g. 5000">
 
-    <button onclick="calculateXP()">Calculate</button>
+    <button onclick="calculateXP()">Calculate Player XP</button>
 
     <div class="result" id="result"></div>
 
@@ -184,8 +178,8 @@
     <div class="result" id="breakdown"></div>
     </div>
     
-    <!-- Clan XP Calculator -->
     <div id="clanCalculator" style="display: none;">
+      <h2>Clan Level XP Calculator</h2>
       <label for="currentClanLevel">Current Clan Level</label>
       <input type="number" id="currentClanLevel" min="1" max="50" placeholder="e.g. 18">
 
