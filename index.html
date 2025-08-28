@@ -96,13 +96,43 @@
       font-size: 16px;
       color: #5865F2;
     }
+    .toggle-buttons {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .toggle-btn {
+      padding: 10px 20px;
+      background-color: #e0e0e0;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 0 5px;
+      transition: background-color 0.3s ease;
+    }
+    .toggle-btn.active {
+      background-color: #0077ff;
+      color: white;
+    }
+    .toggle-btn:hover {
+      background-color: #d0d0d0;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Clash of Clans XP Calculator</h2>
     
-    <label for="currentLevel">Current Level</label>
+    <!-- Toggle Buttons -->
+    <div class="toggle-buttons">
+      <button id="playerBtn" class="toggle-btn active" onclick="toggleCalculator('player')">Player XP</button>
+      <button id="clanBtn" class="toggle-btn" onclick="toggleCalculator('clan')">Clan XP</button>
+    </div>
+    
+    <!-- Player XP Calculator -->
+    <div id="playerCalculator">
+      <label for="currentLevel">Current Level</label>
     <input type="number" id="currentLevel" min="1" placeholder="e.g. 257">
 
     <label for="targetLevel">Target Level</label>
@@ -118,6 +148,26 @@
     <button id="showBreakdown" style="display:none;" onclick="showBreakdown()">Show Level Breakdown</button>
     <button id="collapseBreakdown" style="display:none;" onclick="collapseBreakdown()">Collapse</button>
     <div class="result" id="breakdown"></div>
+    </div>
+    
+    <!-- Clan XP Calculator -->
+    <div id="clanCalculator" style="display: none;">
+      <label for="currentClanLevel">Current Clan Level</label>
+      <input type="number" id="currentClanLevel" min="1" max="50" placeholder="e.g. 18">
+
+      <label for="targetClanLevel">Target Clan Level</label>
+      <input type="number" id="targetClanLevel" min="2" max="51" placeholder="e.g. 20">
+
+      <label for="currentClanXP">Current XP Progress (Optional)</label>
+      <input type="number" id="currentClanXP" min="0" placeholder="e.g. 1000">
+
+      <label for="xpPerWar">Estimated XP per War</label>
+      <input type="number" id="xpPerWar" min="1" placeholder="e.g. 500">
+
+      <button onclick="calculateClanXP()">Calculate Clan XP</button>
+
+      <div class="result" id="clanResult"></div>
+    </div>
     
     <div class="credit">
       Made by <a href="https://discord.com/users/aashutosh" target="_blank">
@@ -183,6 +233,103 @@
       document.getElementById("breakdown").innerHTML = "";
       document.getElementById("collapseBreakdown").style.display = "none";
     }
+
+    function toggleCalculator(type) {
+      const playerCalculator = document.getElementById('playerCalculator');
+      const clanCalculator = document.getElementById('clanCalculator');
+      const playerBtn = document.getElementById('playerBtn');
+      const clanBtn = document.getElementById('clanBtn');
+      
+      if (type === 'player') {
+        playerCalculator.style.display = 'block';
+        clanCalculator.style.display = 'none';
+        playerBtn.classList.add('active');
+        clanBtn.classList.remove('active');
+      } else if (type === 'clan') {
+        playerCalculator.style.display = 'none';
+        clanCalculator.style.display = 'block';
+        playerBtn.classList.remove('active');
+        clanBtn.classList.add('active');
+      }
+      
+      // Clear previous results
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("breakdown").innerHTML = "";
+      document.getElementById("showBreakdown").style.display = "none";
+      document.getElementById("collapseBreakdown").style.display = "none";
+      document.getElementById("clanResult").innerHTML = "";
+    }
+
+    // Clan XP data
+    const clanXPData = {
+      2: 500, 3: 1200, 4: 1900, 5: 3100, 6: 3800, 7: 4500, 8: 5200, 9: 5900, 10: 7900,
+      11: 8600, 12: 9300, 13: 10000, 14: 10700, 15: 15700, 16: 16400, 17: 17100, 18: 17800, 19: 18500, 20: 23500,
+      21: 24200, 22: 24900, 23: 25600, 24: 26300, 25: 31300, 26: 32000, 27: 32700, 28: 33400, 29: 34100, 30: 39100,
+      31: 39800, 32: 40500, 33: 41200, 34: 41900, 35: 46900, 36: 47600, 37: 48300, 38: 49000, 39: 49700, 40: 54700,
+      41: 55400, 42: 56100, 43: 56800, 44: 57500, 45: 62500, 46: 63200, 47: 63900, 48: 64600, 49: 65300, 50: 70300,
+      51: 71000
+    };
+
+    function calculateClanXP() {
+      const currentLevel = parseInt(document.getElementById("currentClanLevel").value);
+      const targetLevel = parseInt(document.getElementById("targetClanLevel").value);
+      const currentXP = parseInt(document.getElementById("currentClanXP").value) || 0;
+      const xpPerWar = parseInt(document.getElementById("xpPerWar").value);
+      const resultDiv = document.getElementById("clanResult");
+
+      if (isNaN(currentLevel) || isNaN(targetLevel) || currentLevel < 1 || targetLevel <= currentLevel) {
+        resultDiv.innerHTML = "⚠️ Please enter valid current and target clan levels.";
+        return;
+      }
+
+      if (targetLevel > 51) {
+        resultDiv.innerHTML = "⚠️ Maximum clan level is 51.";
+        return;
+      }
+
+      let totalXPNeeded = 0;
+      let breakdown = "";
+
+      // Calculate XP needed for each level
+      for (let level = currentLevel; level < targetLevel; level++) {
+        if (clanXPData[level + 1]) {
+          let xpForNextLevel = clanXPData[level + 1];
+          totalXPNeeded += xpForNextLevel;
+          breakdown += `Level ${level} → ${level + 1}: ${xpForNextLevel.toLocaleString()} XP<br>`;
+        }
+      }
+
+      // Subtract current XP progress
+      let remainingXP = totalXPNeeded - currentXP;
+      if (remainingXP < 0) remainingXP = 0;
+
+      let warsRequired = (xpPerWar > 0) ? Math.ceil(remainingXP / xpPerWar) : "N/A";
+
+      resultDiv.innerHTML = `
+        <div style="margin-bottom: 15px;">
+          <strong>Total XP needed:</strong> ${totalXPNeeded.toLocaleString()}<br>
+          <strong>Current XP progress:</strong> ${currentXP.toLocaleString()}<br>
+          <strong>Remaining XP:</strong> ${remainingXP.toLocaleString()}<br>
+          <strong>Estimated wars needed:</strong> ${warsRequired}
+        </div>
+        <button onclick="showClanBreakdown()" style="background: #00aaff; margin-top: 10px;">Show Level Breakdown</button>
+        <div id="clanBreakdown" style="margin-top: 15px; display: none;"></div>
+      `;
+
+      // Store breakdown data
+      window.clanBreakdownData = breakdown;
+    }
+
+    function showClanBreakdown() {
+      const breakdownDiv = document.getElementById("clanBreakdown");
+      breakdownDiv.innerHTML = window.clanBreakdownData;
+      breakdownDiv.style.display = "block";
+    }
+
+    // Initialize calculator on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      toggleCalculator('player'); // Default to player calculator
+    });
   </script>
 </body>
 </html>
