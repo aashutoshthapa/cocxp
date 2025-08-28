@@ -6,8 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <!-- Vercel Analytics -->
   <script defer src="/_vercel/insights/script.js"></script>
   <style>
@@ -94,6 +93,17 @@
     .credit a:hover {
       text-decoration: underline;
     }
+    .contact-link {
+      color: #0077ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+    }
+    .contact-link i {
+      font-size: 14px;
+    }
     .contact-section {
       margin-top: 15px;
       padding-top: 15px;
@@ -141,92 +151,7 @@
       background-color: #d0d0d0;
     }
     
-    /* Feedback Button Styles */
-    .feedback-btn {
-      background: #0077ff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: background-color 0.3s ease;
-    }
-    .feedback-btn:hover {
-      background: #005fcc;
-    }
-    
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.5);
-    }
-    .modal-content {
-      background-color: white;
-      margin: 5% auto;
-      padding: 30px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 500px;
-      position: relative;
-    }
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-      position: absolute;
-      right: 20px;
-      top: 15px;
-    }
-    .close:hover {
-      color: #000;
-    }
-    .modal-content h3 {
-      margin-top: 0;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .modal-content textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      box-sizing: border-box;
-      font-size: 16px;
-      font-family: Arial, sans-serif;
-      resize: vertical;
-      min-height: 100px;
-    }
-    .submit-btn {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      background: #0077ff;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    .submit-btn:hover {
-      background: #005fcc;
-    }
-    .submit-btn:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
+
   </style>
 </head>
 <body>
@@ -279,30 +204,11 @@
     </div>
     
     <div class="credit">
-      <button id="feedbackBtn" class="feedback-btn" onclick="showFeedbackForm()">
-        <i class="fas fa-comment"></i>
-        Write to me
-      </button>
-    </div>
-    
-    <!-- Feedback Modal -->
-    <div id="feedbackModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeFeedbackForm()">&times;</span>
-        <h3>Send Feedback</h3>
-        <form id="feedbackForm">
-          <label for="feedbackName">Name (Optional)</label>
-          <input type="text" id="feedbackName" placeholder="Your name">
-          
-          <label for="feedbackEmail">Email (Optional)</label>
-          <input type="email" id="feedbackEmail" placeholder="your@email.com">
-          
-          <label for="feedbackMessage">Message *</label>
-          <textarea id="feedbackMessage" placeholder="Your feedback, suggestions, or questions..." required></textarea>
-          
-          <button type="submit" class="submit-btn">Send Feedback</button>
-        </form>
-      </div>
+      <p>Have questions or suggestions? Write to me:</p>
+      <a href="mailto:your-email@example.com" class="contact-link">
+        <i class="fas fa-envelope"></i>
+        your-email@example.com
+      </a>
     </div>
   </div>
 
@@ -458,69 +364,7 @@
     // Initialize calculator on page load
     document.addEventListener('DOMContentLoaded', () => {
       toggleCalculator('player'); // Default to player calculator
-      
-      // Initialize Supabase
-      const supabaseUrl = 'https://uopqydpvvskosonhkcmb.supabase.co';
-      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVvcHF5ZHB2dnNrb3NvbmhrY21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNTgyNDIsImV4cCI6MjA3MTkzNDI0Mn0.5RKcuEXZRWTiwux2z16IZXXAk2O_QoB5QeTfj6mpw1A';
-      const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-      
-      // Feedback form submission
-      document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const submitBtn = document.querySelector('.submit-btn');
-        const originalText = submitBtn.textContent;
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending...';
-        
-        const name = document.getElementById('feedbackName').value;
-        const email = document.getElementById('feedbackEmail').value;
-        const message = document.getElementById('feedbackMessage').value;
-        
-        try {
-          const { data, error } = await supabase
-            .from('feedback')
-            .insert([
-              {
-                name: name || 'Anonymous',
-                email: email || null,
-                message: message,
-                created_at: new Date().toISOString()
-              }
-            ]);
-          
-          if (error) throw error;
-          
-          alert('Thank you for your feedback!');
-          closeFeedbackForm();
-          document.getElementById('feedbackForm').reset();
-          
-        } catch (error) {
-          console.error('Error submitting feedback:', error);
-          alert('Sorry, there was an error sending your feedback. Please try again.');
-        } finally {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalText;
-        }
-      });
     });
-    
-    // Feedback modal functions
-    function showFeedbackForm() {
-      document.getElementById('feedbackModal').style.display = 'block';
-    }
-    
-    function closeFeedbackForm() {
-      document.getElementById('feedbackModal').style.display = 'none';
-    }
-    
-    // Close modal when clicking outside
-    window.onclick = function(event) {
-      const modal = document.getElementById('feedbackModal');
-      if (event.target === modal) {
-        closeFeedbackForm();
-      }
-    }
   </script>
 </body>
 </html>
