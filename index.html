@@ -445,14 +445,24 @@
     }
 
     // --- RANK TRACKER LOGIC ---
-    const _0x4a2e = ['aHR0cHM6Ly9kYXp4YnliaXFudXVndXRsb25sdy5zdXBhYmFzZS5jbw==', 'ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW1SaGVuaGllV0pwY1c1MWRXZDFkR3h2Ym14M0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTmpjNU5EY3dNVFVzSW1WNGNDSTZNakE0TXpVeU16QXhOWDAuMGRQOGUtMk1FWXg1ZC1OVmw1Y2ZDeWdSakpXVnhFaU11akZOcE51UXhnOA=='];
-    const db = supabase.createClient(atob(_0x4a2e[0]), atob(_0x4a2e[1]));
+    let db;
+    try {
+      const _0x4a2e = ['aHR0cHM6Ly9kYXp4YnliaXFudXVndXRsb25sdy5zdXBhYmFzZS5jbw==', 'ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW1SaGVuaGllV0pwY1c1MWRXZDFkR3h2Ym14M0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTmpjNU5EY3dNVFVzSW1WNGNDSTZNakE0TXpVeU16QXhOWDAuMGRQOGUtMk1FWXg1ZC1OVmw1Y2ZDeWdSakpXVnhFaU11akZOcE51UXhnOA=='];
+      db = supabase.createClient(atob(_0x4a2e[0]), atob(_0x4a2e[1]));
+    } catch (e) {
+      console.error("Supabase init error:", e);
+    }
 
     function populateRankSelects() {
       const yearSelect = document.getElementById('yearSelect');
       const monthSelect = document.getElementById('monthSelect');
+      if (!yearSelect || !monthSelect) return;
+
+      yearSelect.innerHTML = '';
+      monthSelect.innerHTML = '';
+
       const currentYear = new Date().getFullYear();
-      for (let y = currentYear; y >= 2016; y--) {
+      for (let y = 2026; y >= 2016; y--) {
         const opt = document.createElement('option');
         opt.value = y; opt.textContent = y;
         yearSelect.appendChild(opt);
@@ -482,33 +492,41 @@
       const resultsBody = document.getElementById('resultsBody');
       const wrapper = document.getElementById('seasonTableWrapper');
       const btn = document.getElementById('loadBtn');
-      const season = `${document.getElementById('yearSelect').value}-${document.getElementById('monthSelect').value}`;
       
-      statusEl.textContent = `Loading ${season}...`;
-      btn.classList.add('loading');
-      
-      const { data, error } = await db.from('players').select('*').eq('season', season).order('rank', { ascending: true }).limit(100);
-
-      btn.classList.remove('loading');
-      if (error) {
-        statusEl.textContent = '❌ Error fetching data.';
+      if (!db) {
+        statusEl.textContent = '❌ Database connection failed.';
         return;
       }
 
-      if (!data.length) {
-        statusEl.textContent = '🚫 No data found.';
-        wrapper.style.display = 'none';
-      } else {
-        statusEl.textContent = `✅ Showing top ${data.length} players.`;
-        resultsBody.innerHTML = data.map(p => `
-          <tr>
-            <td>${p.rank}</td>
-            <td>${escapeHtml(p.name)}</td>
-            <td>${p.tag}</td>
-            <td>${escapeHtml(p.clan_name) || '-'}</td>
-          </tr>
-        `).join('');
-        wrapper.style.display = 'block';
+      const season = `${document.getElementById('yearSelect').value}-${document.getElementById('monthSelect').value}`;
+      statusEl.textContent = `Loading ${season}...`;
+      btn.classList.add('loading');
+      
+      try {
+        const { data, error } = await db.from('players').select('*').eq('season', season).order('rank', { ascending: true }).limit(100);
+
+        if (error) throw error;
+
+        if (!data.length) {
+          statusEl.textContent = '🚫 No data found.';
+          wrapper.style.display = 'none';
+        } else {
+          statusEl.textContent = `✅ Showing top ${data.length} players.`;
+          resultsBody.innerHTML = data.map(p => `
+            <tr>
+              <td>${p.rank}</td>
+              <td>${escapeHtml(p.name)}</td>
+              <td>${p.tag}</td>
+              <td>${escapeHtml(p.clan_name) || '-'}</td>
+            </tr>
+          `).join('');
+          wrapper.style.display = 'block';
+        }
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = '❌ Error fetching data.';
+      } finally {
+        btn.classList.remove('loading');
       }
     }
 
@@ -517,6 +535,12 @@
       const resultsBody = document.getElementById('tagResultsBody');
       const wrapper = document.getElementById('tagTableWrapper');
       const btn = document.getElementById('tagSearchBtn');
+
+      if (!db) {
+        statusEl.textContent = '❌ Database connection failed.';
+        return;
+      }
+
       let tag = document.getElementById('tagInput').value.trim().toUpperCase();
       if (!tag.startsWith('#')) tag = '#' + tag;
       document.getElementById('tagInput').value = tag;
@@ -529,28 +553,31 @@
       statusEl.textContent = `Searching ${tag}...`;
       btn.classList.add('loading');
 
-      const { data, error } = await db.from('players').select('*').eq('tag', tag).order('season', { ascending: false });
+      try {
+        const { data, error } = await db.from('players').select('*').eq('tag', tag).order('season', { ascending: false });
 
-      btn.classList.remove('loading');
-      if (error) {
-        statusEl.textContent = '❌ Error fetching data.';
-        return;
-      }
+        if (error) throw error;
 
-      if (!data.length) {
-        statusEl.textContent = '❌ No history found.';
-        wrapper.style.display = 'none';
-      } else {
-        statusEl.textContent = `✅ Found ${data.length} appearance(s).`;
-        resultsBody.innerHTML = data.map(p => `
-          <tr>
-            <td>${p.season}</td>
-            <td>${p.rank}</td>
-            <td>${escapeHtml(p.name)}</td>
-            <td>${escapeHtml(p.clan_name) || '-'}</td>
-          </tr>
-        `).join('');
-        wrapper.style.display = 'block';
+        if (!data.length) {
+          statusEl.textContent = '❌ No history found.';
+          wrapper.style.display = 'none';
+        } else {
+          statusEl.textContent = `✅ Found ${data.length} appearance(s).`;
+          resultsBody.innerHTML = data.map(p => `
+            <tr>
+              <td>${p.season}</td>
+              <td>${p.rank}</td>
+              <td>${escapeHtml(p.name)}</td>
+              <td>${escapeHtml(p.clan_name) || '-'}</td>
+            </tr>
+          `).join('');
+          wrapper.style.display = 'block';
+        }
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = '❌ Error searching tag.';
+      } finally {
+        btn.classList.remove('loading');
       }
     }
 
