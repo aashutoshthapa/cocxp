@@ -41,6 +41,7 @@
   </script>
 
   <script defer src="/_vercel/insights/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
@@ -105,6 +106,10 @@
       border-radius: 6px;
       box-sizing: border-box;
       font-size: 16px;
+      background: white; /* Ensure visible */
+      cursor: pointer;
+      position: relative; /* Ensure it stays on top */
+      z-index: 2;
     }
 
     button {
@@ -353,7 +358,6 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
   <script>
     // --- XP CALCULATOR LOGIC ---
     let breakdownData = "";
