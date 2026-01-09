@@ -2,103 +2,165 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Clash of Clans XP Calculator - Player & Clan Level Estimator</title>
+  <title>CoC Tools - Clash of Clans XP Calculator & Season Rank Tracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Calculate the total XP needed to reach your target player level or clan level in Clash of Clans. Estimate the hours or number of wars required to level up with this easy-to-use XP calculator.">
-  <meta name="keywords" content="Clash of Clans, CoC, XP calculator, player level, clan level, player XP, clan XP, level up, CoC calculator, how to level up fast, Clash of Clans guide">
-  <link rel="canonical" href="https://yourwebsite.com/clash-of-clans-xp-calculator">
-
-  <meta property="og:title" content="Clash of Clans XP Calculator - Player & Clan Level Estimator">
-  <meta property="og:description" content="Calculate the total XP needed to reach your target player level or clan level in Clash of Clans. Estimate the hours or number of wars required to level up with this easy-to-use XP calculator.">
+  <meta name="description" content="Ultimate CoC tools for Clash of Clans: Calculate XP for player and clan levels, and track global season rankings with our real-time leaderboard tracker.">
+  <meta name="keywords" content="Clash of Clans, CoC Tools, XP calculator, Rank Tracker, CoC Leaderboard, Player Rankings, Clan XP, Level Calculator">
+  
+  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://yourwebsite.com/clash-of-clans-xp-calculator">
-  <meta property="og:image" content="https://yourwebsite.com/images/coc-xp-calculator-share-image.jpg">
-  <meta property="og:image:alt" content="Clash of Clans XP Calculator UI showing input fields for player and clan levels">
+  <meta property="og:url" content="https://cocxp.vercel.app/">
+  <meta property="og:title" content="CoC Tools - Clash of Clans XP Calculator & Rank Tracker">
+  <meta property="og:description" content="The most accurate XP calculator and global rank tracker for Clash of Clans players and clans.">
+  <meta property="og:image" content="https://cocxp.vercel.app/og-image.png">
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Clash of Clans XP Calculator - Player & Clan Level Estimator">
-  <meta name="twitter:description" content="Calculate the total XP needed to reach your target player level or clan level in Clash of Clans. Estimate the hours or number of wars required to level up with this easy-to-use XP calculator.">
-  <meta name="twitter:image" content="https://yourwebsite.com/images/coc-xp-calculator-share-image.jpg">
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://cocxp.vercel.app/">
+  <meta property="twitter:title" content="CoC Tools - Clash of Clans XP Calculator & Rank Tracker">
+  <meta property="twitter:description" content="The most accurate XP calculator and global rank tracker for Clash of Clans players and clans.">
+  <meta property="twitter:image" content="https://cocxp.vercel.app/og-image.png">
+
+  <link rel="canonical" href="https://cocxp.vercel.app/">
+  
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CoC Tools",
+    "alternateName": "Clash of Clans XP Calculator & Rank Tracker",
+    "url": "https://cocxp.vercel.app/",
+    "description": "Calculate Clash of Clans XP and track global season rankings.",
+    "applicationCategory": "Tool, Game",
+    "genre": "Strategy",
+    "browserRequirements": "Requires JavaScript",
+    "softwareVersion": "1.2.0",
+    "operatingSystem": "All"
+  }
+  </script>
+
   <script defer src="/_vercel/insights/script.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
+    :root {
+      --primary: #0077ff;
+      --primary-hover: #005fcc;
+      --bg: #f5f5f5;
+      --card-bg: white;
+      --text: #333;
+      --muted: #666;
+      --border: #ddd;
+      --row-alt: #f9f9f9;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      background: var(--bg);
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       min-height: 100vh;
-      padding: 10px;
+      padding: 20px 10px;
+      margin: 0;
+      box-sizing: border-box;
     }
+
     .container {
-      background: white;
+      background: var(--card-bg);
       padding: 20px 30px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       width: 100%;
-      max-width: 400px;
+      max-width: 400px; /* Default for XP calc */
       box-sizing: border-box;
+      transition: max-width 0.3s ease;
     }
+
+    .container.wide {
+      max-width: 1000px; /* Wide for Rank Tracker */
+    }
+
     h1, h2 {
       text-align: center;
       margin-bottom: 20px;
-      color: #333;
+      color: var(--text);
     }
-    h1 {
-      font-size: 28px;
-    }
-    h2 {
-      font-size: 24px;
-    }
+    h1 { font-size: 28px; }
+    h2 { font-size: 24px; }
+
     label {
       display: block;
       margin-top: 10px;
       font-weight: bold;
+      color: var(--muted);
     }
-    input {
+
+    input, select {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--border);
       border-radius: 6px;
       box-sizing: border-box;
       font-size: 16px;
     }
+
     button {
       margin-top: 20px;
       width: 100%;
       padding: 12px;
-      background: #0077ff;
+      background: var(--primary);
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.1s;
+      font-weight: 600;
     }
-    button:hover {
-      background: #005fcc;
-    }
+
+    button:hover { background: var(--primary-hover); }
+    button:active { transform: scale(0.98); }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+
     .result {
       margin-top: 20px;
       font-size: 16px;
       text-align: center;
-      color: #333;
+      color: var(--text);
       line-height: 1.5;
       word-break: break-word;
     }
-    .result b {
-      color: #0077ff;
+    .result b { color: var(--primary); }
+
+    .toggle-buttons {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
-    #showBreakdown, #collapseBreakdown {
-      background: #00aaff;
-      margin-top: 10px;
+
+    .toggle-btn {
+      padding: 10px 15px;
+      background-color: #e0e0e0;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+      margin: 0;
+      width: auto;
+      margin-top: 0;
     }
-    #showBreakdown:hover, #collapseBreakdown:hover {
-      background: #0088cc;
+
+    .toggle-btn.active {
+      background-color: var(--primary);
+      color: white;
     }
+
     .credit {
       margin-top: 30px;
       text-align: center;
@@ -114,98 +176,180 @@
       align-items: center;
       gap: 5px;
     }
-    .credit a:hover {
-      text-decoration: underline;
-    }
-    .toggle-buttons {
+
+    /* Rank Tracker Specific Styles */
+    .controls {
       display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      align-items: flex-end;
     }
-    .toggle-btn {
-      padding: 10px 20px;
-      background-color: #e0e0e0;
-      border: none;
+    .control-group { display: flex; flex-direction: column; flex: 1; min-width: 120px; }
+    
+    .table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--border);
       border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      margin: 0 5px;
-      transition: background-color 0.3s ease;
+      margin-top: 20px;
+      display: none;
     }
-    .toggle-btn.active {
-      background-color: #0077ff;
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      background: var(--primary);
       color: white;
+      text-align: left;
+      padding: 10px;
+      font-size: 14px;
     }
-    .toggle-btn:hover {
-      background-color: #d0d0d0;
-    }
+    tbody td { padding: 10px; border-bottom: 1px solid var(--border); font-size: 14px; }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
     
-    /* SEO-friendly H2 headings for content sections */
-    #playerCalculator h2, #clanCalculator h2 {
-      display: none; /* Hide the headings visually but keep them for SEO */
+    .status {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--primary);
+      text-align: center;
+      min-height: 20px;
     }
-    
+
+    @media (max-width: 600px) {
+      .controls { flex-direction: column; align-items: stretch; }
+      .control-group { width: 100%; }
+    }
+
+    /* Spinner */
+    button.loading { position: relative; color: transparent !important; pointer-events: none; }
+    button.loading::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 1.2em; height: 1.2em;
+      margin: -0.6em 0 0 -0.6em;
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Clash of Clans XP Calculator</h1>
+  <div class="container" id="mainContainer">
+    <h1>Clash of Clans Tools & Rankings</h1>
     
-    <p style="text-align: center; color: #666;">Estimate the XP and time needed to level up your player or clan.</p>
-
     <div class="toggle-buttons">
       <button id="playerBtn" class="toggle-btn active" onclick="toggleCalculator('player')">Player XP</button>
       <button id="clanBtn" class="toggle-btn" onclick="toggleCalculator('clan')">Clan XP</button>
+      <button id="rankBtn" class="toggle-btn" onclick="toggleCalculator('rank')">Rank Tracker</button>
     </div>
     
+    <!-- Player Calculator -->
     <div id="playerCalculator">
-      <h2>Player Level XP Calculator</h2>
-      <label for="currentLevel">Current Player Level</label>
-    <input type="number" id="currentLevel" min="1" placeholder="e.g. 257">
-
-    <label for="targetLevel">Target Player Level</label>
-    <input type="number" id="targetLevel" min="2" placeholder="e.g. 300">
-
-    <label for="xpPerHour">Estimated XP per Hour (Optional)</label>
-    <input type="number" id="xpPerHour" min="1" placeholder="e.g. 5000">
-
-    <button onclick="calculateXP()">Calculate Player XP</button>
-
-    <div class="result" id="result"></div>
-
-    <button id="showBreakdown" style="display:none;" onclick="showBreakdown()">Show Level Breakdown</button>
-    <button id="collapseBreakdown" style="display:none;" onclick="collapseBreakdown()">Collapse</button>
-    <div class="result" id="breakdown"></div>
+      <h2>Player XP Calculator</h2>
+      <label for="currentLevel">Current Level</label>
+      <input type="number" id="currentLevel" min="1" placeholder="e.g. 257">
+      <label for="targetLevel">Target Level</label>
+      <input type="number" id="targetLevel" min="2" placeholder="e.g. 300">
+      <label for="xpPerHour">XP per Hour (Optional)</label>
+      <input type="number" id="xpPerHour" min="1" placeholder="e.g. 5000">
+      <button onclick="calculateXP()">Calculate</button>
+      <div class="result" id="result"></div>
+      <button id="showBreakdown" style="display:none;" onclick="showBreakdown()">Show Breakdown</button>
+      <button id="collapseBreakdown" style="display:none;" onclick="collapseBreakdown()">Collapse</button>
+      <div class="result" id="breakdown"></div>
     </div>
     
+    <!-- Clan Calculator -->
     <div id="clanCalculator" style="display: none;">
-      <h2>Clan Level XP Calculator</h2>
-      <label for="currentClanLevel">Current Clan Level</label>
+      <h2>Clan XP Calculator</h2>
+      <label for="currentClanLevel">Current Level</label>
       <input type="number" id="currentClanLevel" min="1" max="50" placeholder="e.g. 18">
-
-      <label for="targetClanLevel">Target Clan Level</label>
+      <label for="targetClanLevel">Target Level</label>
       <input type="number" id="targetClanLevel" min="2" max="51" placeholder="e.g. 20">
-
-      <label for="currentClanXP">Current XP Progress (Optional)</label>
+      <label for="currentClanXP">Current XP Progress</label>
       <input type="number" id="currentClanXP" min="0" placeholder="e.g. 1000">
-
-      <label for="xpPerWar">Estimated XP per War</label>
+      <label for="xpPerWar">XP per War</label>
       <input type="number" id="xpPerWar" min="1" placeholder="e.g. 500">
-
-      <button onclick="calculateClanXP()">Calculate Clan XP</button>
-
+      <button onclick="calculateClanXP()">Calculate</button>
       <div class="result" id="clanResult"></div>
+    </div>
+
+    <!-- Rank Tracker -->
+    <div id="rankTracker" style="display: none;">
+      <h2>Rank Tracker</h2>
+      
+      <div class="card">
+        <label>Season Leaderboard</label>
+        <div class="controls">
+          <div class="control-group">
+            <label for="yearSelect">Year</label>
+            <select id="yearSelect"></select>
+          </div>
+          <div class="control-group">
+            <label for="monthSelect">Month</label>
+            <select id="monthSelect"></select>
+          </div>
+          <button id="loadBtn" onclick="loadSeason()">
+            <i class="fas fa-calendar-alt"></i> Load
+          </button>
+        </div>
+        <p id="status" class="status"></p>
+        <div class="table-wrapper" id="seasonTableWrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Tag</th>
+                <th>Clan</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 20px;">
+        <label>Search Player Tag</label>
+        <div class="controls">
+          <div class="control-group">
+            <label for="tagInput">Player Tag</label>
+            <input type="text" id="tagInput" placeholder="e.g., #ABC123">
+          </div>
+          <button id="tagSearchBtn" onclick="searchTag()">
+            <i class="fas fa-search"></i> Search
+          </button>
+        </div>
+        <p id="tagStatus" class="status"></p>
+        <div class="table-wrapper" id="tagTableWrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Season</th>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Clan</th>
+              </tr>
+            </thead>
+            <tbody id="tagResultsBody"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
     
     <div class="credit">
       <p>Have questions or suggestions?</p>
-      <a href="https://www.reddit.com/user/Sensitive_Theory9360/" class="contact-link" target="_blank">
-        <i class="fa-brands fa-reddit"></i>
-        @Sensitive_Theory9360
+      <a href="https://www.reddit.com/user/Sensitive_Theory9360/" target="_blank">
+        <i class="fa-brands fa-reddit"></i> @Sensitive_Theory9360
       </a>
     </div>
+  </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
   <script>
+    // --- XP CALCULATOR LOGIC ---
     let breakdownData = "";
 
     function xpForLevel(level) {
@@ -246,7 +390,7 @@
 
       resultDiv.innerHTML = `
         Total XP needed: <b>${totalXP.toLocaleString()}</b><br>
-        Estimated hours to reach target: <b>${hoursRequired}</b>
+        Estimated hours: <b>${hoursRequired}</b>
       `;
 
       breakdownButton.style.display = "block";
@@ -262,33 +406,6 @@
       document.getElementById("collapseBreakdown").style.display = "none";
     }
 
-    function toggleCalculator(type) {
-      const playerCalculator = document.getElementById('playerCalculator');
-      const clanCalculator = document.getElementById('clanCalculator');
-      const playerBtn = document.getElementById('playerBtn');
-      const clanBtn = document.getElementById('clanBtn');
-      
-      if (type === 'player') {
-        playerCalculator.style.display = 'block';
-        clanCalculator.style.display = 'none';
-        playerBtn.classList.add('active');
-        clanBtn.classList.remove('active');
-      } else if (type === 'clan') {
-        playerCalculator.style.display = 'none';
-        clanCalculator.style.display = 'block';
-        playerBtn.classList.remove('active');
-        clanBtn.classList.add('active');
-      }
-      
-      // Clear previous results
-      document.getElementById("result").innerHTML = "";
-      document.getElementById("breakdown").innerHTML = "";
-      document.getElementById("showBreakdown").style.display = "none";
-      document.getElementById("collapseBreakdown").style.display = "none";
-      document.getElementById("clanResult").innerHTML = "";
-    }
-
-    // Clan XP data
     const clanXPData = {
       2: 500, 3: 1200, 4: 1900, 5: 3100, 6: 3800, 7: 4500, 8: 5200, 9: 5900, 10: 7900,
       11: 8600, 12: 9300, 13: 10000, 14: 10700, 15: 15700, 16: 16400, 17: 17100, 18: 17800, 19: 18500, 20: 23500,
@@ -306,57 +423,174 @@
       const resultDiv = document.getElementById("clanResult");
 
       if (isNaN(currentLevel) || isNaN(targetLevel) || currentLevel < 1 || targetLevel <= currentLevel) {
-        resultDiv.innerHTML = "⚠️ Please enter valid current and target clan levels.";
-        return;
-      }
-
-      if (targetLevel > 51) {
-        resultDiv.innerHTML = "⚠️ Maximum clan level is 51.";
+        resultDiv.innerHTML = "⚠️ Please enter valid levels.";
         return;
       }
 
       let totalXPNeeded = 0;
-      let breakdown = "";
-
-      // Calculate XP needed for each level
       for (let level = currentLevel; level < targetLevel; level++) {
         if (clanXPData[level + 1]) {
-          let xpForNextLevel = clanXPData[level + 1];
-          totalXPNeeded += xpForNextLevel;
-          breakdown += `Level ${level} → ${level + 1}: ${xpForNextLevel.toLocaleString()} XP<br>`;
+          totalXPNeeded += clanXPData[level + 1];
         }
       }
 
-      // Subtract current XP progress
-      let remainingXP = totalXPNeeded - currentXP;
-      if (remainingXP < 0) remainingXP = 0;
-
+      let remainingXP = Math.max(0, totalXPNeeded - currentXP);
       let warsRequired = (xpPerWar > 0) ? Math.ceil(remainingXP / xpPerWar) : "N/A";
 
       resultDiv.innerHTML = `
-        <div style="margin-bottom: 15px;">
-          <strong>Total XP needed:</strong> ${totalXPNeeded.toLocaleString()}<br>
-          <strong>Current XP progress:</strong> ${currentXP.toLocaleString()}<br>
-          <strong>Remaining XP:</strong> ${remainingXP.toLocaleString()}<br>
-          <strong>Estimated wars needed:</strong> ${warsRequired}
-        </div>
-        <button onclick="showClanBreakdown()" style="background: #00aaff; margin-top: 10px;">Show Level Breakdown</button>
-        <div id="clanBreakdown" style="margin-top: 15px; display: none;"></div>
+        Total XP: <b>${totalXPNeeded.toLocaleString()}</b><br>
+        Remaining: <b>${remainingXP.toLocaleString()}</b><br>
+        Wars needed: <b>${warsRequired}</b>
       `;
-
-      // Store breakdown data
-      window.clanBreakdownData = breakdown;
     }
 
-    function showClanBreakdown() {
-      const breakdownDiv = document.getElementById("clanBreakdown");
-      breakdownDiv.innerHTML = window.clanBreakdownData;
-      breakdownDiv.style.display = "block";
+    // --- RANK TRACKER LOGIC ---
+    const _0x4a2e = ['aHR0cHM6Ly9kYXp4YnliaXFudXVndXRsb25sdy5zdXBhYmFzZS5jbw==', 'ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW1SaGVuaGllV0pwY1c1MWRXZDFkR3h2Ym14M0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTmpjNU5EY3dNVFVzSW1WNGNDSTZNakE0TXpVeU16QXhOWDAuMGRQOGUtMk1FWXg1ZC1OVmw1Y2ZDeWdSakpXVnhFaU11akZOcE51UXhnOA=='];
+    const db = supabase.createClient(atob(_0x4a2e[0]), atob(_0x4a2e[1]));
+
+    function populateRankSelects() {
+      const yearSelect = document.getElementById('yearSelect');
+      const monthSelect = document.getElementById('monthSelect');
+      const currentYear = new Date().getFullYear();
+      for (let y = currentYear; y >= 2016; y--) {
+        const opt = document.createElement('option');
+        opt.value = y; opt.textContent = y;
+        yearSelect.appendChild(opt);
+      }
+      ['01','02','03','04','05','06','07','08','09','10','11','12'].forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m; opt.textContent = m;
+        monthSelect.appendChild(opt);
+      });
+      const now = new Date();
+      yearSelect.value = now.getFullYear();
+      monthSelect.value = String(now.getMonth() + 1).padStart(2, '0');
     }
 
-    // Initialize calculator on page load
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#39;');
+    }
+
+    async function loadSeason() {
+      const statusEl = document.getElementById('status');
+      const resultsBody = document.getElementById('resultsBody');
+      const wrapper = document.getElementById('seasonTableWrapper');
+      const btn = document.getElementById('loadBtn');
+      const season = `${document.getElementById('yearSelect').value}-${document.getElementById('monthSelect').value}`;
+      
+      statusEl.textContent = `Loading ${season}...`;
+      btn.classList.add('loading');
+      
+      const { data, error } = await db.from('players').select('*').eq('season', season).order('rank', { ascending: true }).limit(100);
+
+      btn.classList.remove('loading');
+      if (error) {
+        statusEl.textContent = '❌ Error fetching data.';
+        return;
+      }
+
+      if (!data.length) {
+        statusEl.textContent = '🚫 No data found.';
+        wrapper.style.display = 'none';
+      } else {
+        statusEl.textContent = `✅ Showing top ${data.length} players.`;
+        resultsBody.innerHTML = data.map(p => `
+          <tr>
+            <td>${p.rank}</td>
+            <td>${escapeHtml(p.name)}</td>
+            <td>${p.tag}</td>
+            <td>${escapeHtml(p.clan_name) || '-'}</td>
+          </tr>
+        `).join('');
+        wrapper.style.display = 'block';
+      }
+    }
+
+    async function searchTag() {
+      const statusEl = document.getElementById('tagStatus');
+      const resultsBody = document.getElementById('tagResultsBody');
+      const wrapper = document.getElementById('tagTableWrapper');
+      const btn = document.getElementById('tagSearchBtn');
+      let tag = document.getElementById('tagInput').value.trim().toUpperCase();
+      if (!tag.startsWith('#')) tag = '#' + tag;
+      document.getElementById('tagInput').value = tag;
+
+      if (tag.length < 4) {
+        statusEl.textContent = '⚠️ Enter a valid tag.';
+        return;
+      }
+
+      statusEl.textContent = `Searching ${tag}...`;
+      btn.classList.add('loading');
+
+      const { data, error } = await db.from('players').select('*').eq('tag', tag).order('season', { ascending: false });
+
+      btn.classList.remove('loading');
+      if (error) {
+        statusEl.textContent = '❌ Error fetching data.';
+        return;
+      }
+
+      if (!data.length) {
+        statusEl.textContent = '❌ No history found.';
+        wrapper.style.display = 'none';
+      } else {
+        statusEl.textContent = `✅ Found ${data.length} appearance(s).`;
+        resultsBody.innerHTML = data.map(p => `
+          <tr>
+            <td>${p.season}</td>
+            <td>${p.rank}</td>
+            <td>${escapeHtml(p.name)}</td>
+            <td>${escapeHtml(p.clan_name) || '-'}</td>
+          </tr>
+        `).join('');
+        wrapper.style.display = 'block';
+      }
+    }
+
+    // --- TOGGLE LOGIC ---
+    function toggleCalculator(type) {
+      const sections = ['playerCalculator', 'clanCalculator', 'rankTracker'];
+      const buttons = ['playerBtn', 'clanBtn', 'rankBtn'];
+      const container = document.getElementById('mainContainer');
+
+      sections.forEach(s => {
+        const el = document.getElementById(s);
+        if (el) el.style.display = 'none';
+      });
+      buttons.forEach(b => {
+        const el = document.getElementById(b);
+        if (el) el.classList.remove('active');
+      });
+
+      const activeEl = document.getElementById(type === 'rank' ? 'rankTracker' : type + 'Calculator');
+      if (activeEl) activeEl.style.display = 'block';
+      
+      const activeBtn = document.getElementById(type + 'Btn');
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (type === 'rank') {
+        container.classList.add('wide');
+      } else {
+        container.classList.remove('wide');
+      }
+    }
+
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
-      toggleCalculator('player'); // Default to player calculator
+      populateRankSelects();
+      toggleCalculator('player');
+    });
+
+    // Handle Enter key for search
+    document.getElementById('tagInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') searchTag();
     });
   </script>
 </body>

@@ -19,3 +19,10 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Production/Local Data
+coc-rank-main/
+deployment-files/
+sync_data.js
+check_supabase.js
+upload.js

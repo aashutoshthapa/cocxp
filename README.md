@@ -1,39 +1,24 @@
-# Clash of Clans XP Calculator
+# Clash of Clans Tools & rankings
 
-A simple web-based calculator to help Clash of Clans players determine how much XP they need to reach their target level and estimate the time required.
+A high-performance, SEO-optimized web application for Clash of Clans players.
 
 ## Features
+- **Player XP Calculator**: Estimate time and XP needed for target levels.
+- **Clan XP Calculator**: Calculate war quotas and levels for your clan.
+- **Global Rank Tracker**: Historical season rankings (2016-2025) and player tag lookup.
 
-- Calculate total XP needed between two levels
-- Support for levels 1-300+ with accurate XP formulas
-- Optional XP per hour input for time estimation
-- Detailed level-by-level breakdown
-- Responsive design for mobile and desktop
-- Clean, modern UI
+## Tech Stack
+- **Frontend**: HTML5, Vanilla CSS, JavaScript.
+- **Backend**: Supabase (PostgreSQL) for real-time ranking data.
+- **Hosting**: Optimized for Vercel, Netlify, or GitHub Pages.
 
-## How to Use
+## SEO & Optimization
+- **Sitemap & Robots**: Full search engine visibility.
+- **Structured Data**: JSON-LD for rich search results.
+- **Performance**: Zero dependencies beyond Supabase client, ultra-fast loading.
+- **Security**: Obfuscated API credentials and Row Level Security (RLS) policies.
 
-1. Enter your current level
-2. Enter your target level
-3. Optionally enter your estimated XP per hour
-4. Click "Calculate" to see results
-5. Use "Show Level Breakdown" to see XP needed for each individual level
-
-## XP Formulas
-
-- Level 1: 30 XP
-- Levels 2-200: 50 × (level - 1) XP
-- Levels 201-299: 500 × (level - 200) + 9,500 XP
-- Levels 300+: 1,000 × (level - 300) + 60,000 XP
-
-## Live Demo
-
-Open `index.html` in any modern web browser to use the calculator.
-
-## Made by
-
-**aashutosh** - [Discord Profile](https://discord.com/users/aashutosh)
-
-## License
-
-This project is open source and available under the MIT License.
+## Deployment
+1. Upload the contents of this folder to your GitHub repository.
+2. Connect to Vercel or your preferred hosting provider.
+3. Enjoy!
