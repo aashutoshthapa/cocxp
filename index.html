@@ -291,6 +291,12 @@
             <label for="monthSelect">Month</label>
             <select id="monthSelect"></select>
           </div>
+          <div class="control-group" style="flex: 0.5; min-width: 80px;">
+            <label>&nbsp;</label>
+            <button id="latestBtn" onclick="setLatestSeason()" style="margin-top: 5px; padding: 10px;">
+              Latest
+            </button>
+          </div>
           <button id="loadBtn" onclick="loadSeason()">
             <i class="fas fa-calendar-alt"></i> Load
           </button>
@@ -445,12 +451,22 @@
     }
 
     // --- RANK TRACKER LOGIC ---
-    let db;
-    try {
-      const _0x4a2e = ['aHR0cHM6Ly9kYXp4YnliaXFudXVndXRsb25sdy5zdXBhYmFzZS5jbw==', 'ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW1SaGVuaGllV0pwY1c1MWRXZDFkR3h2Ym14M0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTmpjNU5EY3dNVFVzSW1WNGNDSTZNakE0TXpVeU16QXhOWDAuMGRQOGUtMk1FWXg1ZC1OVmw1Y2ZDeWdSakpXVnhFaU11akZOcE51UXhnOA=='];
-      db = supabase.createClient(atob(_0x4a2e[0]), atob(_0x4a2e[1]));
-    } catch (e) {
-      console.error("Supabase init error:", e);
+    let db = null;
+
+    function initSupabase() {
+      if (db) return true;
+      try {
+        if (typeof supabase === 'undefined') {
+          console.error("Supabase library not loaded.");
+          return false;
+        }
+        const _0x4a2e = ['aHR0cHM6Ly9kYXp4YnliaXFudXVndXRsb25sdy5zdXBhYmFzZS5jbw==', 'ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW1SaGVuaGllV0pwY1c1MWRXZDFkR3h2Ym14M0lpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTmpjNU5EY3dNVFVzSW1WNGNDSTZNakE0TXpVeU16QXhOWDAuMGRQOGUtMk1FWXg1ZC1OVmw1Y2ZDeWdSakpXVnhFaU11akZOcE51UXhnOA=='];
+        db = supabase.createClient(atob(_0x4a2e[0]), atob(_0x4a2e[1]));
+        return true;
+      } catch (e) {
+        console.error("Supabase init error:", e);
+        return false;
+      }
     }
 
     function populateRankSelects() {
@@ -473,8 +489,16 @@
         monthSelect.appendChild(opt);
       });
       const now = new Date();
+      monthSelect.value = String(now.getMonth() + 1).padStart(2, '0');
+    }
+
+    function setLatestSeason() {
+      const yearSelect = document.getElementById('yearSelect');
+      const monthSelect = document.getElementById('monthSelect');
+      const now = new Date();
       yearSelect.value = now.getFullYear();
       monthSelect.value = String(now.getMonth() + 1).padStart(2, '0');
+      loadSeason();
     }
 
     function escapeHtml(str) {
@@ -493,8 +517,8 @@
       const wrapper = document.getElementById('seasonTableWrapper');
       const btn = document.getElementById('loadBtn');
       
-      if (!db) {
-        statusEl.textContent = '❌ Database connection failed.';
+      if (!initSupabase()) {
+        statusEl.textContent = '❌ Database connection failed. Please refresh or check your internet.';
         return;
       }
 
@@ -536,8 +560,8 @@
       const wrapper = document.getElementById('tagTableWrapper');
       const btn = document.getElementById('tagSearchBtn');
 
-      if (!db) {
-        statusEl.textContent = '❌ Database connection failed.';
+      if (!initSupabase()) {
+        statusEl.textContent = '❌ Database connection failed. Please refresh or check your internet.';
         return;
       }
 
@@ -613,6 +637,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       populateRankSelects();
       toggleCalculator('player');
+      initSupabase(); // Pre-init if possible
     });
 
     // Handle Enter key for search
