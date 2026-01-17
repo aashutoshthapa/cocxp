@@ -296,12 +296,6 @@
             <label for="monthSelect">Month</label>
             <select id="monthSelect"></select>
           </div>
-          <div class="control-group" style="flex: 0.5; min-width: 80px;">
-            <label>&nbsp;</label>
-            <button id="latestBtn" onclick="setLatestSeason()" style="margin-top: 5px; padding: 10px;">
-              Latest
-            </button>
-          </div>
           <button id="loadBtn" onclick="loadSeason()">
             <i class="fas fa-calendar-alt"></i> Load
           </button>
@@ -315,6 +309,7 @@
                 <th>Name</th>
                 <th>Tag</th>
                 <th>Clan</th>
+                <th>Trophies</th>
               </tr>
             </thead>
             <tbody id="resultsBody"></tbody>
@@ -342,6 +337,7 @@
                 <th>Rank</th>
                 <th>Name</th>
                 <th>Clan</th>
+                <th>Trophies</th>
               </tr>
             </thead>
             <tbody id="tagResultsBody"></tbody>
@@ -531,7 +527,7 @@
       btn.classList.add('loading');
       
       try {
-        const { data, error } = await db.from('players').select('*').eq('season', season).order('rank', { ascending: true }).limit(100);
+        const { data, error } = await db.from('players').select('*').eq('season', season).order('rank', { ascending: true }).limit(1000);
 
         if (error) throw error;
 
@@ -546,6 +542,7 @@
               <td>${escapeHtml(p.name)}</td>
               <td>${p.tag}</td>
               <td>${escapeHtml(p.clan_name) || '-'}</td>
+              <td>${p.trophies || '-'}</td>
             </tr>
           `).join('');
           wrapper.style.display = 'block';
@@ -597,6 +594,7 @@
               <td>${p.rank}</td>
               <td>${escapeHtml(p.name)}</td>
               <td>${escapeHtml(p.clan_name) || '-'}</td>
+              <td>${p.trophies || '-'}</td>
             </tr>
           `).join('');
           wrapper.style.display = 'block';
